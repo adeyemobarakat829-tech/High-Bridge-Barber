@@ -28,6 +28,7 @@ address { font-style: normal; }
 .skip-link:focus { transform: translateY(0); }
 
 .site-header { position: fixed; z-index: 20; inset: 0 0 auto; min-height: 86px; display: flex; align-items: center; padding: 0 var(--page-gutter); border-bottom: 1px solid rgba(242,240,232,.1); background: linear-gradient(180deg, rgba(9,10,9,.48), transparent); transition: background .3s ease, border-color .3s ease, backdrop-filter .3s ease; animation: nav-arrive .65s ease-out both; }
+.site-header::after { content: ""; width: var(--scroll-progress, 0%); height: 1px; position: absolute; bottom: -1px; left: 0; background: linear-gradient(90deg, var(--gold), var(--gold-light)); pointer-events: none; }
 .site-header.is-scrolled { border-color: rgba(242,240,232,.13); background: rgba(12,13,11,.86); backdrop-filter: blur(14px); }
 .brand { display: inline-flex; align-items: center; gap: 11px; flex: 0 0 auto; }
 .brand-mark { width: 38px; height: 38px; position: relative; display: grid; place-items: center; overflow: hidden; border: 1px solid var(--gold); color: var(--gold-light); font: 700 17px/.9 var(--display); letter-spacing: 0; }
@@ -41,6 +42,8 @@ address { font-style: normal; }
 .site-nav a::after { content: ""; position: absolute; right: 0; bottom: 3px; left: 0; height: 1px; transform: scaleX(0); transform-origin: left; background: var(--gold); transition: transform .22s ease; }
 .site-nav a:hover { color: #fff; }
 .site-nav a:hover::after { transform: scaleX(1); }
+.site-nav a.is-active { color: var(--gold-light); }
+.site-nav a.is-active::after { transform: scaleX(1); }
 .header-cta { min-width: 148px; padding: 12px 14px; border: 1px solid rgba(200,168,107,.82); color: var(--paper); text-align: center; font-size: 9px; font-weight: 700; letter-spacing: 1px; text-transform: uppercase; transition: background .2s ease, color .2s ease; }
 .header-cta span { margin-left: 12px; color: var(--gold-light); }
 .header-cta:hover { background: var(--gold); color: var(--ink); }
@@ -389,6 +392,7 @@ address { font-style: normal; }
 }
 @media (prefers-reduced-motion: reduce) {
   *, *::before, *::after { scroll-behavior: auto !important; animation-duration: .01ms !important; animation-iteration-count: 1 !important; transition-duration: .01ms !important; }
+  .site-header::after { transition: none; }
   .hero-line > span, .hero-intro, .hero-actions, .scroll-cue, .site-header { transform: none !important; filter: none !important; opacity: 1 !important; }
   .js-ready .reveal, .js-ready .about-image.reveal { clip-path: none; opacity: 1; transform: none; }
 }

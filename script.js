@@ -22,6 +22,9 @@ navigation.addEventListener('click', (event) => {
 
 function syncHeader() {
   header.classList.toggle('is-scrolled', window.scrollY > 24);
+  const scrollableHeight = document.documentElement.scrollHeight - window.innerHeight;
+  const progress = scrollableHeight > 0 ? Math.min(window.scrollY / scrollableHeight, 1) : 0;
+  header.style.setProperty('--scroll-progress', `${progress * 100}%`);
 }
 
 const parallaxImages = [...document.querySelectorAll('.showcase-image, .final-image')];
@@ -62,6 +65,36 @@ window.addEventListener('scroll', () => {
   }
 }, { passive: true });
 syncHeader();
+
+const trackedLinks = [...navigation.querySelectorAll('a[href^="#"]')];
+const trackedSections = trackedLinks
+  .map((link) => document.querySelector(link.getAttribute('href')))
+  .filter(Boolean);
+
+if ('IntersectionObserver' in window) {
+  const visibleSections = new Set();
+  const sectionObserver = new IntersectionObserver((entries) => {
+    entries.forEach((entry) => {
+      if (entry.isIntersecting) visibleSections.add(entry.target);
+      else visibleSections.delete(entry.target);
+    });
+
+    const currentSection = [...visibleSections].sort((first, second) => {
+      const firstDistance = Math.abs(first.getBoundingClientRect().top - window.innerHeight * 0.35);
+      const secondDistance = Math.abs(second.getBoundingClientRect().top - window.innerHeight * 0.35);
+      return firstDistance - secondDistance;
+    })[0];
+
+    trackedLinks.forEach((link) => {
+      const isCurrent = currentSection && document.querySelector(link.getAttribute('href')) === currentSection;
+      link.classList.toggle('is-active', Boolean(isCurrent));
+      if (isCurrent) link.setAttribute('aria-current', 'location');
+      else link.removeAttribute('aria-current');
+    });
+  }, { rootMargin: '-35% 0px -55% 0px', threshold: 0 });
+
+  trackedSections.forEach((section) => sectionObserver.observe(section));
+}
 
 function showLightboxImage(index) {
   activeImage = (index + galleryButtons.length) % galleryButtons.length;
