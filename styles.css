@@ -384,7 +384,7 @@ address { font-style: normal; }
   .lightbox-next { right: 8px; }
 }
 @media (max-width: 380px) {
-  .hero h1 { font-size: clamp(44px, 12vw, 50px); }
+  .hero h1 { font-size: clamp(31px, 11.5vw, 43px); }
   .hero-label { font-size: 7px; }
   .button { padding: 0 11px; font-size: 7px; }
   .contact h2 { font-size: 59px; }
